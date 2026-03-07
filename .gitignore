@@ -1,0 +1,4 @@
+# Obsidian local settings (personal per machine)
+.obsidian/
+.trash/
+.DS_Store
