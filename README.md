@@ -38,7 +38,7 @@ Notes use **YAML frontmatter** for structured filtering and **[[wikilinks]]** fo
 1. **Clone this repo** where you want your vault:
 
    ```bash
-   git clone https://github.com/staffdill/obsidian-second-brain.git ~/Documents/my-vault
+   git clone https://github.com/farminglvl99osrs/obsidian-second-brain.git ~/Documents/my-vault
    cd ~/Documents/my-vault
    ```
 

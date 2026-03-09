@@ -3,8 +3,14 @@ type: service
 status: active
 repo: https://github.com/staffdill/three-sword-style-ai
 owner: staffdill
-tags: [ai, lora, training, gcp, python, image-generation]
-last_updated: 2026-03-07
+tags:
+  - ai
+  - lora
+  - training
+  - gcp
+  - python
+  - image-generation
+last_updated: 2026-03-09
 ---
 
 # three-sword-style-ai
@@ -88,3 +94,26 @@ All backends now generate validation samples during training using native framew
 - **CLI flags:** `--trigger-word`, `--sample-prompts`, `--sample-interval`, `--no-samples`, `--sample-at-first`
 - Wan requires `--vae`, `--text_encoder1`, `--text_encoder2` (auto-passed by entrypoint scripts)
 - Design doc: `docs/plans/2026-03-07-training-sample-generation-design.md`
+
+### Pipeline Dashboard (2026-03-08)
+
+Remote web dashboard for monitoring and controlling pipeline runs from any device on LAN.
+
+**Architecture:**
+- `gallery_service.py` — HTTP + WebSocket server (`0.0.0.0:8000` + `:8001`)
+- `gallery_client.py` — Lightweight HTTP client used by `run_pipeline.py` (no-op when dashboard not running)
+- `gallery_state.py` — Thread-safe JSON state persistence (`gallery_state.json`)
+- `dashboard.html.jinja` — Dark-themed responsive UI
+
+**Key features:**
+- Base image review with retry, retry-with-pro-model, reject, approve
+- Live pipeline step monitoring via WebSocket
+- Image serving for remote review
+- Peek mode (`?peek=1`) for non-destructive decision polling
+- Stop pipeline from dashboard
+- 25-minute idle auto-shutdown
+- `finalize_dataset.py` reads `gallery_state.json` (priority over `review_state.json`)
+
+**CLI integration:** `--dashboard http://host:8000` connects pipeline to dashboard, `--run-id` ensures matched state
+
+**PRs:** #399 (dashboard home page), #400 (integration + gallery client/state), #401 (finalize compat + review skip), #402 (peek mode + image serving + base review)
